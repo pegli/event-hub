@@ -58,6 +58,9 @@ Any periodic tasks like exports or backups that need to be initiated by the Even
 be written in a scripting language appropriate to the task.  For example, an "export to Eventbrite"
 process might be implemented in Python using their [client library](http://developer.eventbrite.com/doc/#libraries).
 
+If freeform search is required for the Hub, we will use the [CouchDB-Lucene](https://github.com/rnewson/couchdb-lucene)
+application for text indexing and searching.
+
 Data Model
 ==========
 

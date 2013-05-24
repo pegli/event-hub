@@ -37,7 +37,8 @@ to publish to external calendaring services like Eventbrite and Meetup.
 Workflow
 ========
 
-This section describes how the Event Hub will be used by producers and publishers.
+This section describes how we envision that the Event Hub will be used by producers and publishers.
+The workflows may change as we gain greater understanding of the desired features of the site.
 
 Example #1
 ----------
