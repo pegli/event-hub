@@ -182,7 +182,57 @@ It is important to have an external definition of the data model for the documen
 CouchDB does not intrinsically provide any schema definitions.  This definition can change over time as
 new features are added or requirements are modified.
 
+Some notes about data formats:
+
+* Long text like descriptions of venues or events can be in either plain text or a markup format
+  that can be converted to HTML or plain text.  Suggested formats for the initial deployment are
+  text, HTML, and [Markdown](http://daringfireball.net/projects/markdown).
+* The `timestamp` type is a long integer representing seconds since the UNIX epoch.  Timestamps 
+  are not affected by time zones or daylight savings time and can be directly compared, unlike many
+  string-based date formats.
+* Hours for relative times (for example, "every day at 11 am") are expressed in 24-hour time.
+
 ### User
+
+A *user* is an individual person with login credentials, an email address, a set of roles specifying
+which actions they are allowed to perform, and an association with one or more producers.  A user's
+login name, password, and roles are stored in the CouchDB `_users` database; see the
+[CouchDB documentation](http://wiki.apache.org/couchdb/Security_Features_Overview#Authentication_database)
+for details on the built-in properties of a user document.  Additional user properties are stored
+in a "profile" document in the main database.
+
+<table>
+  <caption>User profile document properties</caption>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>username</td>
+      <td>string</td>
+      <td>the user's login identifier; matches the username in the _users database</td>
+    </tr>
+    <tr>
+      <td>email</td>
+      <td>string</td>
+      <td>the user's email address</td>
+    </tr>
+    <tr>
+      <td>handle</td>
+      <td>string</td>
+      <td>the name of the user to be shown in events and venue listings</td>
+    </tr>
+    <tr>
+      <td>avatar</td>
+      <td>image attachment</td>
+      <td>a small photo of the user</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Producer
 
@@ -190,21 +240,334 @@ A *producer* is an individual, company, club, or organization that will be creat
 Event Hub.  Examples of producers might include [The Catalyst](http://www.catalystclub.com) club,
 [The 418 Project](http://www.the418.org/), and
 [Toastmasters](http://evening.toastmastersclubs.org/).
-When a user registers for the Event Hub site, they must be associated with a producer.
+When a user registers for the Event Hub site, they must be associated with one or more producers.
 
+<table>
+  <caption>Producer document properties</caption>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td>the public name of the producer (e.g. "The Catalyst Club", "Working Mom's Circle")</td>
+    </tr>
+    <tr>
+      <td>modified_by</td>
+      <td>string</td>
+      <td>the username of the user who last modified this producer</td>
+    </tr>
+    <tr>
+      <td>modified</td>
+      <td>timestamp</td>
+      <td>the last date that the producer was modified</td>
+    </tr>
+    <tr>
+      <td>members</td>
+      <td>array of string</td>
+      <td>the usernames of the users who can modify this producer and post events on its behalf</td>
+    </tr>
+    <tr>
+      <td>venues</td>
+      <td>array of string</td>
+      <td>the document IDs of the venues owned by this producer</td>
+    </tr>
+    <tr>
+      <td>logo</td>
+      <td>image attachment</td>
+      <td>a logo image for the producer</td>
+    </tr>
+  </tbody>
+</table>
+
+### Venue
+
+A venue is a location for an event.  Venues may be permanent or temporary.  Venue
+documents contain information about the venue
+
+<table>
+  <caption>Venue document properties</caption>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td>the public name of the venue (e.g. "Moe's Alley", "Point Pinos Grill", "Santa Cruz Civic Auditorium")</td>
+    </tr>
+    <tr>
+      <td>street_address</td>
+      <td>string</td>
+      <td>the address of the venue (e.g. "1740 17th Ave.")</td>
+    </tr>
+    <tr>
+      <td>city</td>
+      <td>string</td>
+      <td>the venue's city</td>
+    </tr>
+    <tr>
+      <td>state</td>
+      <td>string</td>
+      <td>the venue's state (probably going to be "CA" in all cases!)</td>
+    </tr>
+    <tr>
+      <td>postal_code</td>
+      <td>string</td>
+      <td>the postal code of the venue</td>
+    </tr>
+    <tr>
+      <td>latitude</td>
+      <td>double</td>
+      <td>the latitude of the venue for locating it on a map</td>
+    </tr>
+    <tr>
+      <td>longitude</td>
+      <td>double</td>
+      <td>the latitude of the venue for locating it on a map</td>
+    </tr>
+    <tr>
+      <td>phone</td>
+      <td>string</td>
+      <td>the phone number of the venue</td>
+    </tr>
+    <tr>
+      <td>website</td>
+      <td>URL</td>
+      <td>the venue's web site</td>
+    </tr>
+    <tr>
+      <td>capacity_standing</td>
+      <td>integer</td>
+      <td>the number of guests that can be accommodated if not seated</td>
+    </tr>
+    <tr>
+      <td>capacity_seated</td>
+      <td>integer</td>
+      <td>the number of guests that can be accommodated if seated</td>
+    </tr>
+    <tr>
+      <td>ada_access</td>
+      <td>boolean</td>
+      <td>if true, the venue facilities comply with the Americans With Disabilities Act</td>
+    </tr>
+    <tr>
+      <td>modified_by</td>
+      <td>string</td>
+      <td>the username of the user who last modified this venue</td>
+    </tr>
+    <tr>
+      <td>modified</td>
+      <td>timestamp</td>
+      <td>the last date that the venue was modified</td>
+    </tr>
+    <tr>
+      <td>published</td>
+      <td>boolean</td>
+      <td>set to true to make this venue public</td>
+    </tr>
+    <tr>
+      <td>tags</td>
+      <td>array of string</td>
+      <td>user-defined tags for the venue to aid in searching for venues</td>
+    </tr>
+    <tr>
+      <td>photos</td>
+      <td>image attachments</td>
+      <td>zero or more images of the venue</td>
+    </tr>
+  </tbody>
+</table>
+
+Other potential fields may be added to indicate whether the venue has food and drink
+service, number and type of bathrooms, whether a box office is present, and so on.
+
+### Event
+
+An event is any sort of meeting or performance in a venue that has a starting and
+ending time.  Events may be recurring or non-recurring.
+
+<table>
+  <caption>common Event document properties</caption>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td>the name of the event (e.g. "Sons of Italy BBQ Picnic")</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>string</td>
+      <td>text or markup describing the event</td>
+    </tr>
+    <tr>
+      <td>producer</td>
+      <td>string</td>
+      <td>the document ID of the producer of the event</td>
+    </tr>
+    <tr>
+      <td>venue</td>
+      <td>string</td>
+      <td>the document ID of the venue of the event</td>
+    </tr>
+    <tr>
+      <td>published</td>
+      <td>boolean</td>
+      <td>set to true to make this event public</td>
+    </tr>
+    <tr>
+      <td>ticket_url</td>
+      <td>url</td>
+      <td>the website where tickets for this event can be purchased</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>non-recurring Event document properties</caption>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>venue_open</td>
+      <td>timestamp</td>
+      <td>the time at which the venue will open for guests for this event</td>
+    </tr>
+    <tr>
+      <td>start</td>
+      <td>timestamp</td>
+      <td>the starting time of the event</td>
+    </tr>
+    <tr>
+      <td>finish</td>
+      <td>timestamp</td>
+      <td>the finish time of the event</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>recurring Event document properties</caption>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>venue_open_hr</td>
+      <td>integer</td>
+      <td>the hour at which the venue will open for guests for each event</td>
+    </tr>
+    <tr>
+      <td>venue_open_mi</td>
+      <td>integer</td>
+      <td>the minute at which the venue will open for guests for each event</td>
+    </tr>
+    <tr>
+      <td>repeat_type</td>
+      <td>string</td>
+      <td>one of "daily", "weekly", "monthly"</td>
+    </tr>
+    <tr>
+      <td>repeat_interval</td>
+      <td>integer</td>
+      <td>repeat every n of "repeat type", e.g. 2 days</td>
+    </tr>
+    <tr>
+      <td>repeat_on</td>
+      <td>integer</td>
+      <td>
+        For weekly repeats, a bitmask starting with Sunday indicating which days of the week to repeat;
+        e.g. 20 (binary 0010100) means repeat every Tuesday and Thursday.  For monthly repeats, the 
+        day of the month to repeat.
+      </td>
+    </tr>
+    <tr>
+      <td>ends</td>
+      <td>timestamp</td>
+      <td>
+        the date after which no more events of this type should be shown.  Can be null or absent to indicate an
+        event that repeats indefinitely.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 Producer Web Site
------------------
+=================
 
-TODO screenshot mockups
+Login
+-----
+
+Registration
+------------
+
+User Profile
+------------
+
+Event and Venue List
+--------------------
+
+New/Edit Venue
+--------------
+
+New/Edit Event
+--------------
+
+Import Events
+-------------
+
+### iCal
+
 
 Data Feeds
-----------
+==========
 
 TODO transformation to output formats
 
-Support
-=======
+Facebook Integration
+--------------------
 
-TODO how we will support the hub
+The Event Hub will integrate with Facebook's [Graph API](https://developers.facebook.com/docs/reference/api/)
+to allow producers to push events to their Facebook calendars.  Users who wish to integrate with Facebook
+will need to authorize the Event Hub Facebook app and allow the app to post events to their account or page.
+
+The Event Hub Facebook app will be created and managed by our team during the development and integration
+process.  Control of that app will be transferred to the appropriate City department when development is complete.
+
+
+Support and Availability
+========================
+
+Our team is local to Santa Cruz and can provide support via email, instant messaging, and by phone.  Our
+preference would be to develop the Event Hub as an open source project hosted on [Github](https://github.com/),
+which will provide source control, issue tracking, and wiki capabilities for the development process.
+During the detailed design period of the project, our team will be available for in-person meetings with
+the City staff, Modern Tribe, and stakeholders.
+
+The team is available immediately to begin work on the project. 
 
