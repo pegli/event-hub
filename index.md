@@ -37,6 +37,8 @@ of our proposal, and thanks for your consideration!
 #### Changelog
 
 <dl>
+  <dt>2013-05-24</dt>
+  <dd>Updated site mockups; added export formats</dd>
   <dt>2013-05-21</dt>
   <dd>Initial document</dd>
 </dl>
