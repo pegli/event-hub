@@ -113,6 +113,11 @@ in a "profile" document in the main database.
       <td>the name of the user to be shown in events and venue listings</td>
     </tr>
     <tr>
+      <td>phone</td>
+      <td>string</td>
+      <td>the private phone number of the user</td>
+    </tr>
+    <tr>
       <td>avatar</td>
       <td>image attachment</td>
       <td>a small photo of the user</td>
@@ -404,10 +409,65 @@ ending time.  Events may be recurring or non-recurring.
 </table>
 
 
+Importing
+=========
+
+Users of the Event Hub most likely already have some sort of calendaring system by
+which they track their own events.  The Event Hub will provide importing and, in some
+cases, limited synchronization between external calendars and the Hub.  In the initial
+deployment of the Hub, importing will be limited to event records.
+
+iCalendar
+---------
+
+The [iCalendar format](http://en.wikipedia.org/wiki/ICalendar) is an
+[IETF standard](http://tools.ietf.org/html/rfc5545) for exchanging calendar event
+data.  Most commercial calendar systems can either export data in iCalendar
+format or can provide an HTTP link to an iCalendar feed.  The Event Hub should
+support importing data in iCalendar format either by uploading a file from the
+user's computer or by storing and polling an iCalendar feed URL.
+
+iCalendar files can contain instructions for modifying or deleting existing
+events, which should also be supported by the Event Hub.
+
+CSV
+---
+
+For those applications which do not support iCalendar format, the Event Hub should
+support uploading a comma-separated value (CSV) file of events.  A CSV file would
+only be able to add new events into the Hub.
+
+
 Data Feeds
 ==========
 
-TODO transformation to output formats
+At the outset, the formats and delivery systems used by the Event Hub to provide
+data will be primarily driven by the primary stakeholders who are consuming the
+data.  The team will be working with these publishers to integrate event, venue, and
+producer data into their existing systems.  In addition to the custom integration
+work, we recommend that the Event Hub also support the following standard
+syndication formats:
+
+RSS
+---
+
+[Rich Site Summary](http://en.wikipedia.org/wiki/RSS) (RSS) is a group of data formats
+used to publish content for web sites.  RSS is perhaps the most widely-supported
+syndication format, with dozens of client applications that can read and display RSS
+feeds and support in most major content management web applications.
+
+[specification](http://backend.userland.com/rss093)
+
+Atom Syndication format
+-----------------------
+
+The [Atom Syndication format](http://en.wikipedia.org/wiki/Atom_(standard)) is a standard for
+publishing content from periodically-updated web sites.  It was created to address some
+of the perceived shortcomings of RSS and to give the content generator greater control over
+the display of their syndicated articles.
+
+[IETF specification](http://tools.ietf.org/html/rfc4287) 
+
 
 Facebook Integration
 --------------------

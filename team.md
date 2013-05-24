@@ -2,7 +2,7 @@
 layout: default
 title: Team
 ---
-  
+
 # Paul MIETZ EGLI
 ### Architect and Technical Lead
 
@@ -22,22 +22,12 @@ other major corporate partners.
 
 Paul is also an independent consultant doing iPhone and Android app development in
 his spare time.  He has successfully published three of his own iPhone apps and 
-built two complete apps as well as many app components for his customers. 
+built two complete apps as well as many app components for his customers.  As a consultant,
+Paul has worked closely with software engineers, graphic designers, product managers,
+and project managers to deliver high quality solutions on time and on budget.
 
-#### References
-
-Matt Apperson  
-President, Apperson Labs  
-matt@appersonlabs.com
-
-Ellen Pack  
-Founder, AppSmitten.com  
-ellen@appsmitten.com
-
-Dwipal Desai  
-Samsung Electronics  
-dwipal@facebook.com
-
+Paul is an active open source contributor and software author.  His open source projects
+may be viewed on [Github](https://github.com/pegli).
 
 [Paul's resume](paul_resume.pdf)
 

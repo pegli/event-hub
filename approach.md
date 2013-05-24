@@ -122,14 +122,3 @@ Friday night.  Mike opens up Google Calendar and deletes the show.  A few hours 
 Event Hub and logs in.  Sure enough, the Oozing Eyeballs show has been removed from the Event Hub as well.
 
 
-Support and Availability
-========================
-
-Our team is local to Santa Cruz and can provide support via email, instant messaging, and by phone.  Our
-preference would be to develop the Event Hub as an open source project hosted on [Github](https://github.com/),
-which will provide source control, issue tracking, and wiki capabilities for the development process.
-During the detailed design period of the project, our team will be available for in-person meetings with
-the City staff, Modern Tribe, and stakeholders.
-
-The team is available immediately to begin work on the project. 
-
