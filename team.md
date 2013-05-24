@@ -3,7 +3,7 @@ layout: default
 title: Team
 ---
   
-## Paul MIETZ EGLI
+# Paul MIETZ EGLI
 ### Architect and Technical Lead
 
 Paul has over sixteen years of professional software development experience and has
@@ -26,21 +26,23 @@ built two complete apps as well as many app components for his customers.
 
 #### References
 
-Matt Apperson, President  
-Apperson Labs  
+Matt Apperson  
+President, Apperson Labs  
 matt@appersonlabs.com
 
-Ellen Pack, Founder  
-AppSmitten.com  
+Ellen Pack  
+Founder, AppSmitten.com  
 ellen@appsmitten.com
 
-Dwipal Desai, President
+Dwipal Desai  
 Samsung Electronics  
 dwipal@facebook.com
 
 
 [Paul's resume](paul_resume.pdf)
 
-## Heather MIETZ EGLI
-### Design and Project Management
+# Heather MIETZ EGLI
+### Project Management
+
+
 
